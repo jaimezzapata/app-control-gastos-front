@@ -1,5 +1,9 @@
 import { useState, useEffect } from "react"
 import { end_points } from '../services/api'
+import { redirectAlert } from "../helpers/alerts"
+import { saveLocalStorage } from "../helpers/local-storage"
+import { Link } from "react-router-dom"
+
 const Login = () => {
   const [getEmail, setEmail] = useState("")
   const [getPassword, setPassword] = useState("")
@@ -23,9 +27,10 @@ const Login = () => {
   function signIn() {
     let user = findUser()
     if (user) {
-      alert("Bienvenido al sistema " + user.nombres)
+      saveLocalStorage("user", user)  //Esto sirve para que la informacion del usuario se almacene automaticamente en el LocalStorage
+      redirectAlert("Bienvenido al sistema " + user.nombres, "Sera redireccionado al pane principa en", "success", "/dashboard")
     } else {
-      alert("Error de credenciales...")
+      redirectAlert("Error de credenciales", "Sera redireccionado al pane principa en", "success", "/dashboard")
     }
   }
 
@@ -74,7 +79,7 @@ const Login = () => {
             <footer class="text-center">
               <p class="text-sm text-slate-600 dark:text-slate-400">
                 Don't have an account?
-                <a class="font-semibold text-[#006600] hover:underline ml-1" href="#">Sign up for free</a>
+                <Link class="font-semibold text-[#006600] hover:underline ml-1" to="/register">Sign up for free</Link>
               </p>
             </footer>
           </div>

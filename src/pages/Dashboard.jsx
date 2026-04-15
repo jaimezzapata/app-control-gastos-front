@@ -1,3 +1,5 @@
+import { getLocalStorage, removeLocalStorage } from "../helpers/local-storage"
+
 const Dashboard = () => {
   return (
     <div class="relative flex min-h-screen w-full flex-col overflow-x-hidden bg-slate-50 dark:bg-slate-950">
