@@ -1,5 +1,44 @@
 import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { end_points } from "../services/api";
+import { redirectAlert } from "../helpers/alerts";
+
 const Register = () => {
+  const [nombres, setNombres] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [tipoDocumento, setTipoDocumento] = useState("");
+  const [documento, setDocumento] = useState("");
+  const [edad, setEdad] = useState("");
+  const [users, setUsers] = useState([]);
+
+  function getUsers() {
+    fetch(end_points.users)
+      .then((response) => response.json())
+      .then((data) => setUsers(data));
+  }
+
+  function findUser() {
+    let auth = users.find(
+      (item) => email == item.email || documento == item.password,
+    );
+    return auth;
+  }
+
+  function saveUser() {
+    let user = { nombres, email, password, documento, tipoDocumento, edad };
+    fetch(end_points.users, {
+      body: JSON.stringify(user),
+      method: "POST",
+    })
+      .then((response) => response.json())
+      .then((data) => console.log(data));
+  }
+
+  useEffect(() => {
+    getUsers();
+  }, []);
+
   return (
     <div>
       <div class="relative flex min-h-screen w-full flex-col overflow-x-hidden">
