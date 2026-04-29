@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { end_points } from "../services/api";
-import { redirectAlert } from "../helpers/alerts";
+import { generalAlert, redirectAlert } from "../helpers/alerts";
 
 const Register = () => {
   const [nombres, setNombres] = useState("");
@@ -28,12 +28,19 @@ const Register = () => {
   function saveUser() {
     let user = { nombres, email, password, documento, tipoDocumento, edad };
     console.log(user);
-    // fetch(end_points.users, {
-    //   body: JSON.stringify(user),
-    //   method: "POST",
-    // })
-    //   .then((response) => response.json())
-    //   .then((data) => console.log(data));
+    if (findUser()) {
+      return generalAlert(
+        "Error",
+        "Correo y/o documento ya existe en el sistema",
+        "error",
+      );
+    }
+    fetch(end_points.users, {
+      body: JSON.stringify(user),
+      method: "POST",
+    })
+      .then((response) => response.json())
+      .then((data) => console.log(data));
   }
 
   useEffect(() => {
@@ -116,6 +123,7 @@ const Register = () => {
                 </div>
                 <select
                   onChange={(e) => setTipoDocumento(e.target.value)}
+                  value={tipoDocumento}
                   class="flex w-full rounded-lg border border-slate-200 dark:border-slate-800 bg-white px-4 py-3 text-sm ring-offset-white placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#006600] focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                   placeholder="Documento"
                   type="text"
